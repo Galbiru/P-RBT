@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Retail Brand Tracker 2026 - Survey Panel</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+    :root { --bg-main: #020617; --bg-card: #0f172a; --accent: #2563eb; --accent-soft: #60a5fa; --text-main: #e5e7eb; --text-muted: #9ca3af; }
+    body { margin: 0; padding: 20px; min-height: 100vh; font-family: "Poppins", sans-serif; background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.3), transparent 60%), linear-gradient(135deg, var(--bg-main), #000); color: var(--text-main); }
+    .app-shell { max-width: 520px; margin: 0 auto; border-radius: 24px; background: var(--bg-card); border: 1px solid rgba(148, 163, 184, 0.4); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9); padding: 20px; position: relative; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-soft)); border: none; color: #fff; padding: 12px; border-radius: 999px; width: 100%; cursor: pointer; font-weight: 600; margin-top: 10px; }
+    .grid-container { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
+    .card-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.3); background: rgba(255,255,255,0.05); color: #fff; text-align: left; cursor: pointer; transition: 0.2s; width: 100%; box-sizing: border-box; }
+    .card-item:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-soft); transform: translateY(-2px); }
+    .badge-circle { min-width: 30px; height: 30px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .back-link { color: var(--accent-soft); cursor: pointer; background: none; border: none; margin-bottom: 10px; padding: 0; font-size: 0.9rem; }
+    h3 { margin-top: 5px; border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 10px;}
+    .search-box { width: 100%; padding: 12px 15px; border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.5); background: rgba(15, 23, 42, 0.9); color: var(--text-main); font-family: inherit; font-size: 0.85rem; outline: none; transition: 0.2s; box-sizing: border-box; }
+    .search-box:focus { border-color: var(--accent-soft); box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- WELCOME VIEW -->
+    <div id="view-welcome">
+      <div style="font-size: 0.7rem; color: var(--accent-soft); letter-spacing: 2px;">ACORN CONSULTANT</div>
+      <h1 style="font-size:1.6rem; margin: 5px 0;">Project Retail Brand Tracker 2026<br>Survey Hub</h1>
+      <p style="color:var(--text-muted); font-size: 0.85rem;">Distribusi link spesifik per wilayah dan interviewer.</p>
+      <button class="btn-primary" onclick="showView('view-regions')">MASUK DASHBOARD</button>
+    </div>
+
+    <!-- REGIONS VIEW -->
+    <div id="view-regions" style="display:none;">
+      <button class="back-link" onclick="showView('view-welcome')">← Kembali</button>
+      <h3>Pilih Daerah atau Cari</h3>
+      <input type="text" id="input-search" class="search-box" placeholder="Ketik nama daerah atau user..." autocomplete="off">
+      <div id="search-results-grid" class="grid-container" style="display:none;"></div>
+      <div id="regions-grid" class="grid-container"></div>
+    </div>
+
+    <!-- INTERVIEWERS VIEW -->
+    <div id="view-interviewers" style="display:none;">
+      <button id="btn-back-to-regions" class="back-link">← Pilih Daerah</button>
+      <h3 id="region-title"></h3>
+      <div id="interviewers-grid" class="grid-container"></div>
+    </div>
+
+    <!-- LINKS VIEW -->
+    <div id="view-links" style="display:none;">
+      <button id="btn-back-to-interviewers" class="back-link">← Pilih Interviewer</button>
+      <h3 id="interviewer-title"></h3>
+      <div id="links-grid" class="grid-container"></div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // PASTE LINK DI SINI (DIPISAH PER USER)
+    // ==========================================
+    // Kamu bebas nambahin link sebanyak apapun di dalam tanda backtick ( ` ) milik tiap user.
+    // Menambah link di User 4 TIDAK AKAN menggeser link di User lainnya.
+    
+    const DATA_LINKS = {
+      "Jakarta": {
+        "User 1": `
+https://insights.ipsosinteractive.com/surveys/?pid=S26006923&id=10191010001&ci=id-ID
+https://insights.ipsosinteractive.com/surveys/?pid=S26006923&id=10191010002&ci=id-ID
+        `,
+        "User 2": `
+https://insights.ipsosinteractive.com/surveys/?pid=S26006923&id=10191010051&ci=id-ID
+https://insights.ipsosinteractive.com/surveys/?pid=S26006923&id=10191010052&ci=id-ID
+        `,
+        "User 3": ``,
+        "User 4": ``,
+        "User 5": ``,
+        "User 6": ``,
+        "User 7": ``,
+        "User 8": ``,
+        "User 9": ``,
+        "User 10": ``,
+        "User 11": ``,
+        "User 12": ``
+      },
+      "Surabaya": {
+        "User 1": ``,
+        "User 2": ``,
+        "User 3": ``,
+        "User 4": ``,
+        "User 5": ``,
+        "User 6": ``,
+        "User 7": ``,
+        "User 8": ``,
+        "User 9": ``,
+        "User 10": ``
+      }
+    };
+
+    // Fungsi pembersih link (menghapus baris kosong/spasi dari teks yang di-paste)
+    function parseLinks(rawText) {
+      return rawText.split('\n')
+        .map(l => l.trim())
+        .filter(l => l !== "" && l.includes("http"));
+    }
+
+    // Mengkonversi DATA_LINKS menjadi struktur array agar mudah dirender
+    const finalData = Object.keys(DATA_LINKS).map(regionName => {
+      const usersData = DATA_LINKS[regionName];
+      return {
+        name: regionName,
+        interviewers: Object.keys(usersData).map(userName => ({
+          name: userName,
+          links: parseLinks(usersData[userName])
+        }))
+      };
+    });
+
+    // --- NAVIGASI UI ---
+    function showView(id) {
+      ['view-welcome', 'view-regions', 'view-interviewers', 'view-links'].forEach(v => {
+        const el = document.getElementById(v);
+        if(el) el.style.display = (v === id) ? 'block' : 'none';
+      });
+    }
+
+    // --- LOGIKA PENCARIAN ---
+    const inputSearch = document.getElementById('input-search');
+    const searchResultsGrid = document.getElementById('search-results-grid');
+    const regionsGrid = document.getElementById('regions-grid');
+
+    inputSearch.addEventListener('input', (e) => {
+      const keyword = e.target.value.toLowerCase();
+      
+      if (keyword.trim() === '') {
+        searchResultsGrid.style.display = 'none';
+        regionsGrid.style.display = 'grid';
+        return;
+      }
+
+      regionsGrid.style.display = 'none';
+      searchResultsGrid.style.display = 'grid';
+      searchResultsGrid.innerHTML = '';
+
+      let found = false;
+
+      finalData.forEach((region, rIdx) => {
+        let regionMatch = region.name.toLowerCase().includes(keyword);
+        
+        region.interviewers.forEach((intv, iIdx) => {
+          if (regionMatch || intv.name.toLowerCase().includes(keyword)) {
+            addSearchResult(intv.name, region.name, rIdx, iIdx, intv.links.length);
+            found = true;
+          }
+        });
+      });
+
+      if (!found) {
+        searchResultsGrid.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Tidak ditemukan.</div>`;
+      }
+    });
+
+    function addSearchResult(userName, regionName, rIdx, iIdx, linkCount) {
+        const btn = document.createElement('button');
+        btn.className = 'card-item';
+        btn.innerHTML = `<div class="badge-circle" style="background:var(--accent-soft); color:#000;">🔍</div><div><b>${userName}</b><br><small>${regionName} • ${linkCount} Link</small></div>`;
+        btn.onclick = () => {
+            inputSearch.value = '';
+            searchResultsGrid.style.display = 'none';
+            regionsGrid.style.display = 'grid';
+            renderLinks(rIdx, iIdx); // Langsung lompat ke links
+        };
+        searchResultsGrid.appendChild(btn);
+    }
+
+    // --- RENDER FUNGSI ---
+    function renderRegions() {
+      regionsGrid.innerHTML = '';
+      finalData.forEach((region, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'card-item';
+        btn.innerHTML = `<div class="badge-circle">${i+1}</div><div><b>${region.name}</b><br><small>${region.interviewers.length} User</small></div>`;
+        btn.onclick = () => renderInterviewers(i);
+        regionsGrid.appendChild(btn);
+      });
+    }
+
+    function renderInterviewers(rIdx) {
+      const region = finalData[rIdx];
+      document.getElementById('region-title').innerText = region.name;
+      
+      const grid = document.getElementById('interviewers-grid');
+      grid.innerHTML = '';
+      
+      region.interviewers.forEach((intv, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'card-item';
+        btn.innerHTML = `<div class="badge-circle">${i+1}</div><div><b>${intv.name}</b><br><small>${intv.links.length} Link Tersedia</small></div>`;
+        btn.onclick = () => renderLinks(rIdx, i);
+        grid.appendChild(btn);
+      });
+      
+      document.getElementById('btn-back-to-regions').onclick = () => { showView('view-regions'); };
+      showView('view-interviewers');
+    }
+
+    function renderLinks(rIdx, iIdx) {
+      const region = finalData[rIdx];
+      const interviewer = region.interviewers[iIdx];
+
+      document.getElementById('interviewer-title').innerText = `${interviewer.name} (${region.name})`;
+      const grid = document.getElementById('links-grid');
+      grid.innerHTML = '';
+      
+      if(interviewer.links.length === 0) {
+          grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">Belum ada link yang dimasukkan.</div>`;
+      } else {
+          interviewer.links.forEach((l, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'card-item';
+            btn.innerHTML = `<div class="badge-circle">${i+1}</div><div style="font-size:0.7rem; word-break:break-all;">${l}</div>`;
+            btn.onclick = () => window.open(l, '_blank');
+            grid.appendChild(btn);
+          });
+      }
+
+      document.getElementById('btn-back-to-interviewers').onclick = () => renderInterviewers(rIdx);
+      showView('view-links');
+    }
+
+    window.onload = () => {
+      renderRegions();
+      showView('view-welcome');
+    };
+  </script>
+</body>
+</html>
